@@ -12,6 +12,7 @@ A modular web application built with Go Fiber framework that demonstrates modern
 - **Static File Serving**: CSS, JavaScript and other static assets
 - **RESTful API Endpoints**: JSON API alongside HTML pages
 - **Book Store CRUD API**: Complete example of Create, Read, Update, Delete operations
+- **Swagger/OpenAPI Documentation**: Interactive API documentation with Swagger UI
 - **Modern UI**: Clean, professional design with responsive layout
 
 ## Project Structure
@@ -26,6 +27,10 @@ A modular web application built with Go Fiber framework that demonstrates modern
 │   └── api_handlers.go  # API endpoint handlers
 ├── routes/              # Route definitions
 │   └── routes.go        # All application routes
+├── docs/                # Swagger documentation (auto-generated)
+│   ├── docs.go          # Generated Swagger docs
+│   ├── swagger.json     # OpenAPI JSON specification
+│   └── swagger.yaml     # OpenAPI YAML specification
 ├── views/               # HTML templates
 │   ├── index.html       # Home page template
 │   └── about.html       # About page template
@@ -70,6 +75,10 @@ The server will start on `http://localhost:3000`
 ### Page Routes
 - **GET /** - Home page with HTML template and HTMX demo
 - **GET /about** - About page with feature list
+
+### API Documentation
+- **GET /swagger/*** - Interactive Swagger UI for API documentation
+- **GET /swagger/doc.json** - OpenAPI JSON specification
 
 ### API Routes
 - **GET /api/hello** - JSON API endpoint
@@ -137,13 +146,37 @@ The application follows a modular architecture pattern:
 - **config**: Handles application configuration and Fiber app setup
 - **handlers**: Contains HTTP request handlers organized by functionality
 - **routes**: Centralized route definitions and setup
+- **docs**: Auto-generated Swagger/OpenAPI documentation
 
 This structure makes the codebase more maintainable and scalable.
+
+### API Documentation with Swagger
+The application uses Swagger/OpenAPI for automatic API documentation:
+
+- **Swagger Annotations**: API endpoints are documented using Swagger comments in the code
+- **Auto-generation**: Documentation is generated using the `swag` tool
+- **Interactive UI**: Swagger UI provides an interactive interface to explore and test the API
+- **OpenAPI Specification**: Available in both JSON and YAML formats
+
+To regenerate the Swagger documentation after making changes to API endpoints:
+```bash
+# Install swag CLI tool (if not already installed)
+go install github.com/swaggo/swag/cmd/swag@latest
+
+# Generate documentation
+~/go/bin/swag init
+```
 
 ### HTMX Integration
 The frontend uses HTMX for dynamic content updates without full page reloads. The API endpoint returns HTML fragments that are swapped into the page, providing a smooth user experience.
 
 ## Screenshots
+
+### Swagger API Documentation
+![Swagger UI](https://github.com/user-attachments/assets/010f5932-a829-4c34-b93d-3ba61764c67c)
+
+### Swagger Endpoint Details
+![Swagger Endpoint Details](https://github.com/user-attachments/assets/17915c42-8699-4ea3-ba61-de8adaacd035)
 
 ### Home Page
 ![Home Page](https://github.com/user-attachments/assets/4c1cf2b9-76e0-40c8-8525-dfb938087496)
@@ -167,6 +200,8 @@ air
 
 - [Fiber v2](https://github.com/gofiber/fiber) - Web framework
 - [Fiber Template HTML](https://github.com/gofiber/template) - HTML template engine
+- [Fiber Swagger](https://github.com/gofiber/swagger) - Swagger middleware for Fiber
+- [Swag](https://github.com/swaggo/swag) - Swagger documentation generator
 
 ## License
 
