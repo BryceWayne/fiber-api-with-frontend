@@ -97,10 +97,18 @@ func (r *FirebaseRepository) GetByID(ctx context.Context, id string) (*Book, err
 func (r *FirebaseRepository) Update(ctx context.Context, id string, book *Book) error {
 	book.ID = id
 	
-	// Use Update() which fails if document doesn't exist, avoiding extra read
-	_, err := r.client.Collection(r.collection).Doc(id).Set(ctx, book)
+	// Build update map with all fields
+	updates := []firestore.Update{
+		{Path: "title", Value: book.Title},
+		{Path: "author", Value: book.Author},
+		{Path: "isbn", Value: book.ISBN},
+		{Path: "year", Value: book.Year},
+	}
+	
+	// Use Update() which fails if document doesn't exist
+	_, err := r.client.Collection(r.collection).Doc(id).Update(ctx, updates)
 	if err != nil {
-		return fmt.Errorf("failed to update book: %w", err)
+		return fmt.Errorf("book not found: %w", err)
 	}
 	
 	return nil
