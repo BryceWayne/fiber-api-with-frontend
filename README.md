@@ -172,20 +172,20 @@ The frontend uses HTMX for dynamic content updates without full page reloads. Th
 
 ## Screenshots
 
-### Swagger API Documentation
-![Swagger UI](https://github.com/user-attachments/assets/010f5932-a829-4c34-b93d-3ba61764c67c)
-
-### Swagger Endpoint Details
-![Swagger Endpoint Details](https://github.com/user-attachments/assets/17915c42-8699-4ea3-ba61-de8adaacd035)
-
 ### Home Page
-![Home Page](https://github.com/user-attachments/assets/4c1cf2b9-76e0-40c8-8525-dfb938087496)
+![Home Page](screenshots/home-page.png)
 
 ### HTMX in Action
-![HTMX Demo](https://github.com/user-attachments/assets/ce38770c-6336-4126-a5ca-7d4ae954b49a)
+![HTMX Demo](screenshots/htmx-demo.png)
 
 ### About Page
-![About Page](https://github.com/user-attachments/assets/ad99f26c-913c-4f74-a7db-8a776e03914d)
+![About Page](screenshots/about-page.png)
+
+### Swagger API Documentation
+![Swagger UI](screenshots/swagger-api.png)
+
+### Swagger Endpoint Details
+![Swagger Endpoint Details](screenshots/swagger-endpoint-details.png)
 
 ## Development
 
