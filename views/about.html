@@ -15,19 +15,48 @@
         </ul>
     </nav>
     <main>
-        <h1>{{.Title}}</h1>
-        <p>{{.Content}}</p>
+        <div class="page-header" style="margin-bottom: 2rem;">
+            <h1>{{.Title}}</h1>
+            <p style="font-size: 1.125rem;">{{.Content}}</p>
+        </div>
         
         <div class="features">
-            <h2>Features</h2>
+            <div class="card-header">
+                <h2 style="margin: 0;">Platform Features</h2>
+                <span class="badge badge-primary">v2.0</span>
+            </div>
             <ul>
-                <li>Go Fiber Framework</li>
-                <li>Modular Architecture</li>
-                <li>HTML Template Engine</li>
-                <li>HTMX Integration</li>
-                <li>Static File Serving</li>
-                <li>RESTful API Endpoints</li>
+                <li>Go Fiber Framework - High-performance web framework</li>
+                <li>Modular Architecture - Clean, maintainable code structure</li>
+                <li>HTML Template Engine - Server-side rendering</li>
+                <li>HTMX Integration - Dynamic content without JavaScript</li>
+                <li>Static File Serving - Optimized asset delivery</li>
+                <li>RESTful API Endpoints - Standards-compliant API design</li>
+                <li>Swagger Documentation - Interactive API explorer</li>
+                <li>Modern UI/UX - Professional dark theme interface</li>
             </ul>
+        </div>
+
+        <!-- Technology Stack Section -->
+        <div class="card" style="margin-top: 2rem;">
+            <h2 style="margin-top: 0;">Technology Stack</h2>
+            <div class="grid grid-cols-3" style="margin-top: 1.5rem;">
+                <div style="text-align: center; padding: 1rem;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+                    <h3 style="margin-bottom: 0.5rem;">Backend</h3>
+                    <p style="font-size: 0.875rem;">Go Fiber v2</p>
+                </div>
+                <div style="text-align: center; padding: 1rem;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎨</div>
+                    <h3 style="margin-bottom: 0.5rem;">Frontend</h3>
+                    <p style="font-size: 0.875rem;">HTML + HTMX</p>
+                </div>
+                <div style="text-align: center; padding: 1rem;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div>
+                    <h3 style="margin-bottom: 0.5rem;">API Docs</h3>
+                    <p style="font-size: 0.875rem;">Swagger/OpenAPI</p>
+                </div>
+            </div>
         </div>
     </main>
 </body>
