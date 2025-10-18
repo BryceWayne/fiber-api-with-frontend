@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Books Library</h1>
+            <p class="subtitle">Manage your book collection with ease</p>
+        </header>
+
+        <main>
+            <!-- Add Book Form -->
+            <section class="add-book-section">
+                <h2>Add New Book</h2>
+                <form 
+                    hx-post="/books" 
+                    hx-target="#book-list" 
+                    hx-swap="innerHTML"
+                    class="book-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" name="title" required placeholder="Enter book title">
+                        </div>
+                        <div class="form-group">
+                            <label for="author">Author</label>
+                            <input type="text" id="author" name="author" required placeholder="Enter author name">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="year">Year</label>
+                            <input type="number" id="year" name="year" required placeholder="2024" min="1000" max="2100">
+                        </div>
+                        <div class="form-group form-group-wide">
+                            <label for="description">Description</label>
+                            <input type="text" id="description" name="description" placeholder="Brief description">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-icon">➕</span>
+                        Add Book
+                    </button>
+                </form>
+            </section>
+
+            <!-- Books List -->
+            <section class="books-section">
+                <h2>Book Collection</h2>
+                <div 
+                    id="book-list" 
+                    hx-get="/books" 
+                    hx-trigger="load"
+                    hx-swap="innerHTML">
+                    <div class="loading">Loading books...</div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with ❤️ using Go Fiber + htmx</p>
+        </footer>
+    </div>
+</body>
+</html>

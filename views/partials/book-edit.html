@@ -1,0 +1,39 @@
+<div class="book-card book-card-edit" id="book-{{.Book.ID}}">
+    <form 
+        hx-put="/books/{{.Book.ID}}"
+        hx-target="#book-list"
+        hx-swap="innerHTML"
+        class="book-edit-form">
+        <div class="form-group">
+            <label for="edit-title-{{.Book.ID}}">Title</label>
+            <input type="text" id="edit-title-{{.Book.ID}}" name="title" value="{{.Book.Title}}" required>
+        </div>
+        <div class="form-group">
+            <label for="edit-author-{{.Book.ID}}">Author</label>
+            <input type="text" id="edit-author-{{.Book.ID}}" name="author" value="{{.Book.Author}}" required>
+        </div>
+        <div class="form-group">
+            <label for="edit-year-{{.Book.ID}}">Year</label>
+            <input type="number" id="edit-year-{{.Book.ID}}" name="year" value="{{.Book.Year}}" required>
+        </div>
+        <div class="form-group">
+            <label for="edit-description-{{.Book.ID}}">Description</label>
+            <input type="text" id="edit-description-{{.Book.ID}}" name="description" value="{{.Book.Description}}">
+        </div>
+        <div class="book-actions">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <span class="btn-icon">💾</span>
+                Save
+            </button>
+            <button 
+                type="button"
+                hx-get="/books"
+                hx-target="#book-list"
+                hx-swap="innerHTML"
+                class="btn btn-secondary btn-sm">
+                <span class="btn-icon">❌</span>
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>
