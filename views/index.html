@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}}</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/htmx.min.js"></script>
 </head>
 <body>
     <nav>
@@ -19,24 +20,14 @@
         
         <div class="api-demo">
             <h2>API Endpoint Demo</h2>
-            <button id="fetchBtn">Fetch from API</button>
+            <button 
+                hx-get="/api/hello-html" 
+                hx-target="#apiResponse"
+                hx-swap="innerHTML">
+                Fetch from API
+            </button>
             <div id="apiResponse"></div>
         </div>
     </main>
-
-    <script>
-        document.getElementById('fetchBtn').addEventListener('click', async () => {
-            try {
-                const response = await fetch('/api/hello');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                document.getElementById('apiResponse').innerHTML = `<p>API Response: ${data.message}</p>`;
-            } catch (error) {
-                document.getElementById('apiResponse').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
-            }
-        });
-    </script>
 </body>
 </html>

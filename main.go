@@ -3,46 +3,23 @@ package main
 import (
 	"log"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/html/v2"
+	"github.com/BryceWayne/fiber-api-with-frontend/config"
+	"github.com/BryceWayne/fiber-api-with-frontend/routes"
 )
 
 func main() {
-	// Initialize HTML template engine
-	engine := html.New("./views", ".html")
+	// Initialize configuration
+	cfg := config.NewConfig()
 
-	// Create a new Fiber instance with the template engine
-	app := fiber.New(fiber.Config{
-		Views: engine,
-	})
+	// Setup template engine
+	engine := cfg.SetupTemplateEngine()
 
-	// Serve static files
-	app.Static("/static", "./static")
+	// Create Fiber app
+	app := cfg.SetupApp(engine)
 
-	// Routes
-	app.Get("/", func(c *fiber.Ctx) error {
-		// Render index template
-		return c.Render("index", fiber.Map{
-			"Title":   "Welcome to Fiber",
-			"Message": "This is a Go Fiber API with HTML templates!",
-		})
-	})
-
-	app.Get("/about", func(c *fiber.Ctx) error {
-		// Render about template
-		return c.Render("about", fiber.Map{
-			"Title":   "About",
-			"Content": "This is a demonstration of Fiber with HTML templating.",
-		})
-	})
-
-	// API endpoint
-	app.Get("/api/hello", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hello from Fiber API!",
-		})
-	})
+	// Setup routes
+	routes.Setup(app)
 
 	// Start server
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(cfg.Port))
 }

@@ -1,27 +1,38 @@
 # fiber-api-with-frontend
-Go Fiber API with HTML Templates
+Go Fiber API with HTML Templates and HTMX
 
-A simple web application built with Go Fiber framework that demonstrates HTML templating, static file serving, and RESTful API endpoints.
+A modular web application built with Go Fiber framework that demonstrates modern web development practices including modular architecture, HTML templating, HTMX integration, and RESTful API endpoints.
 
 ## Features
 
 - **Go Fiber Framework**: Fast and lightweight web framework for Go
+- **Modular Architecture**: Clean separation of concerns with dedicated packages
 - **HTML Template Engine**: Server-side rendering with Go's HTML templates
-- **Static File Serving**: CSS and other static assets
+- **HTMX Integration**: Dynamic content loading without full page reloads
+- **Static File Serving**: CSS, JavaScript and other static assets
 - **RESTful API Endpoints**: JSON API alongside HTML pages
-- **Modern UI**: Responsive design with gradient backgrounds
+- **Modern UI**: Clean, professional design with responsive layout
 
 ## Project Structure
 
 ```
 .
-├── main.go              # Main application file
+├── main.go              # Main application entry point
+├── config/              # Configuration package
+│   └── config.go        # App configuration and setup
+├── handlers/            # HTTP handlers
+│   ├── page_handlers.go # Page rendering handlers
+│   └── api_handlers.go  # API endpoint handlers
+├── routes/              # Route definitions
+│   └── routes.go        # All application routes
 ├── views/               # HTML templates
 │   ├── index.html       # Home page template
 │   └── about.html       # About page template
 ├── static/              # Static assets
-│   └── css/
-│       └── style.css    # Stylesheet
+│   ├── css/
+│   │   └── style.css    # Stylesheet
+│   └── js/
+│       └── htmx.min.js  # HTMX library
 ├── go.mod               # Go module file
 └── go.sum               # Go dependencies
 ```
@@ -55,20 +66,38 @@ The server will start on `http://localhost:3000`
 
 ## Available Routes
 
-- **GET /** - Home page with HTML template
-- **GET /about** - About page with HTML template
+### Page Routes
+- **GET /** - Home page with HTML template and HTMX demo
+- **GET /about** - About page with feature list
+
+### API Routes
 - **GET /api/hello** - JSON API endpoint
+- **GET /api/hello-html** - HTML fragment endpoint for HTMX
+
+## Architecture
+
+### Modular Design
+The application follows a modular architecture pattern:
+
+- **config**: Handles application configuration and Fiber app setup
+- **handlers**: Contains HTTP request handlers organized by functionality
+- **routes**: Centralized route definitions and setup
+
+This structure makes the codebase more maintainable and scalable.
+
+### HTMX Integration
+The frontend uses HTMX for dynamic content updates without full page reloads. The API endpoint returns HTML fragments that are swapped into the page, providing a smooth user experience.
 
 ## Screenshots
 
 ### Home Page
-![Home Page](https://github.com/user-attachments/assets/7cfe93dc-7199-4d12-ad39-13831d45676e)
+![Home Page](https://github.com/user-attachments/assets/4c1cf2b9-76e0-40c8-8525-dfb938087496)
 
-### API Demo
-![API Demo](https://github.com/user-attachments/assets/70db98a7-b122-4c18-8030-d8eb68e79d8e)
+### HTMX in Action
+![HTMX Demo](https://github.com/user-attachments/assets/ce38770c-6336-4126-a5ca-7d4ae954b49a)
 
 ### About Page
-![About Page](https://github.com/user-attachments/assets/679cc612-bf3f-462a-93a8-7860a24834be)
+![About Page](https://github.com/user-attachments/assets/ad99f26c-913c-4f74-a7db-8a776e03914d)
 
 ## Development
 
