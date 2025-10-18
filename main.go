@@ -34,7 +34,9 @@ func main() {
 	app := cfg.SetupApp(engine)
 
 	// Setup routes
-	routes.Setup(app)
+	if err := routes.Setup(app, cfg); err != nil {
+		log.Fatalf("Failed to setup routes: %v", err)
+	}
 
 	// Start server
 	log.Fatal(app.Listen(cfg.Port))

@@ -7,6 +7,10 @@ A modular web application built with Go Fiber framework that demonstrates modern
 
 - **Go Fiber Framework**: Fast and lightweight web framework for Go
 - **Modular Architecture**: Clean separation of concerns with dedicated packages
+- **Database Abstraction Layer**: Repository pattern for easy database switching
+- **Multiple Database Support**: 
+  - In-memory storage (default, for development)
+  - Google Firebase/Firestore (production-ready cloud database)
 - **HTML Template Engine**: Server-side rendering with Go's HTML templates
 - **HTMX Integration**: Dynamic content loading without full page reloads
 - **Static File Serving**: CSS, JavaScript and other static assets
@@ -21,7 +25,11 @@ A modular web application built with Go Fiber framework that demonstrates modern
 .
 ├── main.go              # Main application entry point
 ├── config/              # Configuration package
-│   └── config.go        # App configuration and setup
+│   └── config.go        # App configuration and database setup
+├── repository/          # Database abstraction layer
+│   ├── repository.go    # Repository interface definition
+│   ├── memory.go        # In-memory implementation
+│   └── firebase.go      # Firebase/Firestore implementation
 ├── handlers/            # HTTP handlers
 │   ├── page_handlers.go # Page rendering handlers
 │   └── api_handlers.go  # API endpoint handlers
@@ -39,6 +47,7 @@ A modular web application built with Go Fiber framework that demonstrates modern
 │   │   └── style.css    # Stylesheet
 │   └── js/
 │       └── htmx.min.js  # HTMX library
+├── FIREBASE_SETUP.md    # Firebase setup guide
 ├── go.mod               # Go module file
 └── go.sum               # Go dependencies
 ```
@@ -58,6 +67,8 @@ go mod download
 
 ## Running the Application
 
+### With In-Memory Database (Default)
+
 1. Build the application:
 ```bash
 go build -o fiber-app
@@ -68,7 +79,34 @@ go build -o fiber-app
 ./fiber-app
 ```
 
-The server will start on `http://localhost:3000`
+The server will start on `http://localhost:3000` using in-memory storage.
+
+### With Firebase/Firestore
+
+1. Set up Firebase by following the [Firebase Setup Guide](FIREBASE_SETUP.md)
+
+2. Set environment variables:
+```bash
+export DB_TYPE=firebase
+export FIREBASE_PROJECT_ID=your-project-id
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account-key.json
+```
+
+3. Run the application:
+```bash
+./fiber-app
+```
+
+The server will start on `http://localhost:3000` using Firebase/Firestore.
+
+### Configuration Options
+
+The application can be configured via environment variables:
+
+- `DB_TYPE`: Database type (`memory` or `firebase`, default: `memory`)
+- `FIREBASE_PROJECT_ID`: Google Cloud project ID (required for Firebase)
+- `FIREBASE_COLLECTION`: Firestore collection name (default: `books`)
+- `GOOGLE_APPLICATION_CREDENTIALS`: Path to service account JSON key file (required for Firebase)
 
 ## Available Routes
 
@@ -143,12 +181,35 @@ curl -X DELETE http://localhost:3000/api/books/1
 ### Modular Design
 The application follows a modular architecture pattern:
 
-- **config**: Handles application configuration and Fiber app setup
+- **config**: Handles application configuration and database setup
+- **repository**: Database abstraction layer using the Repository pattern
+  - Provides a clean interface for data operations
+  - Allows easy switching between different database backends
+  - Currently supports in-memory and Firebase/Firestore
 - **handlers**: Contains HTTP request handlers organized by functionality
-- **routes**: Centralized route definitions and setup
+- **routes**: Centralized route definitions and repository initialization
 - **docs**: Auto-generated Swagger/OpenAPI documentation
 
 This structure makes the codebase more maintainable and scalable.
+
+### Database Abstraction
+The application uses the Repository pattern to abstract database operations:
+
+```go
+type BookRepository interface {
+    Create(ctx context.Context, book *Book) error
+    GetAll(ctx context.Context) ([]Book, error)
+    GetByID(ctx context.Context, id string) (*Book, error)
+    Update(ctx context.Context, id string, book *Book) error
+    Delete(ctx context.Context, id string) error
+}
+```
+
+This design allows you to:
+- Switch databases without changing business logic
+- Add new database implementations easily
+- Test with mock repositories
+- Use different databases for different environments
 
 ### API Documentation with Swagger
 The application uses Swagger/OpenAPI for automatic API documentation:
@@ -202,6 +263,8 @@ air
 - [Fiber Template HTML](https://github.com/gofiber/template) - HTML template engine
 - [Fiber Swagger](https://github.com/gofiber/swagger) - Swagger middleware for Fiber
 - [Swag](https://github.com/swaggo/swag) - Swagger documentation generator
+- [Cloud Firestore](https://cloud.google.com/firestore) - Google Cloud Firestore client library
+- [Google Cloud APIs](https://google.golang.org/api) - Google Cloud API support
 
 ## License
 
