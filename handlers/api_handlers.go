@@ -19,7 +19,10 @@ func (h *APIHandler) Hello(c *fiber.Ctx) error {
 	})
 }
 
+// HTML response template for HTMX
+const helloHTMLTemplate = `<p class="api-result">API Response: Hello from Fiber API!</p>`
+
 // HelloHTML returns an HTML fragment for HTMX
 func (h *APIHandler) HelloHTML(c *fiber.Ctx) error {
-	return c.SendString(`<p class="api-result">API Response: Hello from Fiber API!</p>`)
+	return c.SendString(helloHTMLTemplate)
 }
