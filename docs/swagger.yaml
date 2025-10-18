@@ -1,0 +1,210 @@
+basePath: /
+definitions:
+  handlers.Book:
+    properties:
+      author:
+        type: string
+      id:
+        type: integer
+      isbn:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: https://github.com/BryceWayne/fiber-api-with-frontend
+  description: A modular web application built with Go Fiber framework featuring RESTful
+    API endpoints, HTML templating, and HTMX integration.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Fiber API with Frontend
+  version: "1.0"
+paths:
+  /api/books:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of all books in the store
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of books
+          schema:
+            items:
+              $ref: '#/definitions/handlers.Book'
+            type: array
+      summary: Get all books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: Create a new book with the provided details
+      parameters:
+      - description: Book object to create
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.Book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created book
+          schema:
+            $ref: '#/definitions/handlers.Book'
+        "400":
+          description: Invalid request body or missing required fields
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new book
+      tags:
+      - books
+  /api/books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a book by its ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Book deleted successfully
+        "400":
+          description: Invalid book ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Book not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a book
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      description: Returns a specific book by its ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Book details
+          schema:
+            $ref: '#/definitions/handlers.Book'
+        "400":
+          description: Invalid book ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Book not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a book by ID
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing book with the provided details
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated book object
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated book
+          schema:
+            $ref: '#/definitions/handlers.Book'
+        "400":
+          description: Invalid book ID or request body
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Book not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a book
+      tags:
+      - books
+  /api/hello:
+    get:
+      consumes:
+      - application/json
+      description: Returns a simple hello message in JSON format
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hello message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get hello message
+      tags:
+      - api
+  /api/hello-html:
+    get:
+      consumes:
+      - application/json
+      description: Returns an HTML fragment for HTMX integration
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: HTML fragment
+          schema:
+            type: string
+      summary: Get hello HTML fragment
+      tags:
+      - api
+schemes:
+- http
+swagger: "2.0"

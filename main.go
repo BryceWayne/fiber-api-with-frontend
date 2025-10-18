@@ -7,6 +7,22 @@ import (
 	"github.com/BryceWayne/fiber-api-with-frontend/routes"
 )
 
+// @title Fiber API with Frontend
+// @version 1.0
+// @description A modular web application built with Go Fiber framework featuring RESTful API endpoints, HTML templating, and HTMX integration.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url https://github.com/BryceWayne/fiber-api-with-frontend
+// @contact.email support@example.com
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:3000
+// @BasePath /
+// @schemes http
+
 func main() {
 	// Initialize configuration
 	cfg := config.NewConfig()

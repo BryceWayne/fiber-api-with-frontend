@@ -1,8 +1,10 @@
 package routes
 
 import (
+	_ "github.com/BryceWayne/fiber-api-with-frontend/docs" // Import generated docs
 	"github.com/BryceWayne/fiber-api-with-frontend/handlers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
 )
 
 // Setup configures all application routes
@@ -13,6 +15,9 @@ func Setup(app *fiber.App) {
 
 	// Serve static files
 	app.Static("/static", "./static")
+
+	// Swagger documentation
+	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	// Page routes
 	app.Get("/", pageHandler.Index)
