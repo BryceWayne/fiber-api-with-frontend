@@ -1,0 +1,32 @@
+name: Go CI
+
+on:
+  push:
+    branches: [ "*" ]
+
+jobs:
+  test:
+    name: Test and Format Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.21'
+    
+    - name: Check gofmt
+      run: |
+        # Check if all files are formatted correctly
+        unformatted=$(gofmt -l .)
+        if [ -n "$unformatted" ]; then
+          echo "The following files are not formatted with gofmt:"
+          echo "$unformatted"
+          exit 1
+        fi
+    
+    - name: Run tests
+      run: go test -v ./...
