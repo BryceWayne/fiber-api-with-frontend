@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>{{.Title}}</h1>
+        <p>{{.Message}}</p>
+        
+        <div class="api-demo">
+            <h2>API Endpoint Demo</h2>
+            <button id="fetchBtn">Fetch from API</button>
+            <div id="apiResponse"></div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('fetchBtn').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/hello');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                document.getElementById('apiResponse').innerHTML = `<p>API Response: ${data.message}</p>`;
+            } catch (error) {
+                document.getElementById('apiResponse').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

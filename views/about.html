@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>{{.Title}}</h1>
+        <p>{{.Content}}</p>
+        
+        <div class="features">
+            <h2>Features</h2>
+            <ul>
+                <li>Go Fiber Framework</li>
+                <li>HTML Template Engine</li>
+                <li>Static File Serving</li>
+                <li>RESTful API Endpoints</li>
+            </ul>
+        </div>
+    </main>
+</body>
+</html>
