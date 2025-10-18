@@ -15,9 +15,9 @@
         </ul>
     </nav>
     <main>
-        <div class="page-header" style="margin-bottom: 2rem;">
+        <div class="page-header">
             <h1>{{.Title}}</h1>
-            <p style="font-size: 1.125rem;">{{.Message}}</p>
+            <p>{{.Message}}</p>
         </div>
 
         <!-- Strategy Overview Section -->
@@ -72,35 +72,35 @@
             <div class="grid grid-cols-2" style="margin-top: 1.5rem;">
                 <div>
                     <h3>Entry Parameters</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
-                            <span style="color: var(--text-muted);">Strike Price:</span> 
-                            <span style="float: right; color: var(--text-primary); font-weight: 600;">$150.00</span>
+                    <ul class="param-list">
+                        <li class="param-item">
+                            <span class="param-label">Strike Price:</span> 
+                            <span class="param-value primary">$150.00</span>
                         </li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
-                            <span style="color: var(--text-muted);">Expiration:</span> 
-                            <span style="float: right; color: var(--text-primary); font-weight: 600;">30 Days</span>
+                        <li class="param-item">
+                            <span class="param-label">Expiration:</span> 
+                            <span class="param-value">30 Days</span>
                         </li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
-                            <span style="color: var(--text-muted);">Premium:</span> 
-                            <span style="float: right; color: var(--accent-success); font-weight: 600;">$2.50</span>
+                        <li class="param-item">
+                            <span class="param-label">Premium:</span> 
+                            <span class="param-value success">$2.50</span>
                         </li>
                     </ul>
                 </div>
                 <div>
                     <h3>Risk Metrics</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
-                            <span style="color: var(--text-muted);">Max Profit:</span> 
-                            <span style="float: right; color: var(--accent-success); font-weight: 600;">$500.00</span>
+                    <ul class="metric-list">
+                        <li class="metric-item">
+                            <span class="metric-label">Max Profit:</span> 
+                            <span class="metric-value success">$500.00</span>
                         </li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
-                            <span style="color: var(--text-muted);">Max Loss:</span> 
-                            <span style="float: right; color: var(--accent-danger); font-weight: 600;">$250.00</span>
+                        <li class="metric-item">
+                            <span class="metric-label">Max Loss:</span> 
+                            <span class="metric-value danger">$250.00</span>
                         </li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
-                            <span style="color: var(--text-muted);">Break-even:</span> 
-                            <span style="float: right; color: var(--text-primary); font-weight: 600;">$152.50</span>
+                        <li class="metric-item">
+                            <span class="metric-label">Break-even:</span> 
+                            <span class="metric-value">$152.50</span>
                         </li>
                     </ul>
                 </div>

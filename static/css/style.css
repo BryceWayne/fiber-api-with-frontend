@@ -100,8 +100,8 @@ h1 {
     letter-spacing: -0.025em;
     background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 h2 {
@@ -317,6 +317,65 @@ button:active {
 
 .grid-cols-3 {
     grid-template-columns: repeat(3, 1fr);
+}
+
+/* Metric and parameter lists */
+.metric-list,
+.param-list {
+    list-style: none;
+    padding: 0;
+}
+
+.metric-item,
+.param-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.metric-label,
+.param-label {
+    color: var(--text-muted);
+}
+
+.metric-value,
+.param-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.metric-value.success {
+    color: var(--accent-success);
+}
+
+.metric-value.danger {
+    color: var(--accent-danger);
+}
+
+.metric-value.primary {
+    color: var(--accent-primary);
+}
+
+/* Technology stack items */
+.tech-stack-item {
+    text-align: center;
+    padding: 1rem;
+}
+
+.tech-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Page header */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header p {
+    font-size: 1.125rem;
 }
 
 /* Responsive design */
