@@ -29,4 +29,7 @@ type BookRepository interface {
 	
 	// Delete removes a book from the repository
 	Delete(ctx context.Context, id string) error
+	
+	// Close closes any open connections and cleans up resources
+	Close() error
 }

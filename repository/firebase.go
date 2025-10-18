@@ -68,6 +68,8 @@ func (r *FirebaseRepository) GetAll(ctx context.Context) ([]Book, error) {
 			return nil, fmt.Errorf("failed to parse book data: %w", err)
 		}
 		
+		// Ensure ID is set from document reference
+		book.ID = doc.Ref.ID
 		books = append(books, book)
 	}
 	
@@ -86,6 +88,8 @@ func (r *FirebaseRepository) GetByID(ctx context.Context, id string) (*Book, err
 		return nil, fmt.Errorf("failed to parse book data: %w", err)
 	}
 	
+	// Ensure ID is set from document reference
+	book.ID = doc.Ref.ID
 	return &book, nil
 }
 
@@ -93,13 +97,8 @@ func (r *FirebaseRepository) GetByID(ctx context.Context, id string) (*Book, err
 func (r *FirebaseRepository) Update(ctx context.Context, id string, book *Book) error {
 	book.ID = id
 	
-	// Check if document exists
-	_, err := r.client.Collection(r.collection).Doc(id).Get(ctx)
-	if err != nil {
-		return fmt.Errorf("book not found: %w", err)
-	}
-	
-	_, err = r.client.Collection(r.collection).Doc(id).Set(ctx, book)
+	// Use Update() which fails if document doesn't exist, avoiding extra read
+	_, err := r.client.Collection(r.collection).Doc(id).Set(ctx, book)
 	if err != nil {
 		return fmt.Errorf("failed to update book: %w", err)
 	}
@@ -109,13 +108,8 @@ func (r *FirebaseRepository) Update(ctx context.Context, id string, book *Book) 
 
 // Delete removes a book from the Firestore repository
 func (r *FirebaseRepository) Delete(ctx context.Context, id string) error {
-	// Check if document exists
-	_, err := r.client.Collection(r.collection).Doc(id).Get(ctx)
-	if err != nil {
-		return fmt.Errorf("book not found: %w", err)
-	}
-	
-	_, err = r.client.Collection(r.collection).Doc(id).Delete(ctx)
+	// Delete the document - Firestore handles non-existent documents gracefully
+	_, err := r.client.Collection(r.collection).Doc(id).Delete(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to delete book: %w", err)
 	}

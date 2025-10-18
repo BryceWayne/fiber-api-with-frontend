@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/BryceWayne/fiber-api-with-frontend/config"
@@ -12,29 +13,31 @@ import (
 	"github.com/gofiber/swagger"
 )
 
-// Setup configures all application routes
-func Setup(app *fiber.App, cfg *config.Config) {
-	// Initialize repository based on configuration
-	var repo repository.BookRepository
-	var err error
-
+// initRepository initializes the repository based on configuration
+func initRepository(cfg *config.Config) (repository.BookRepository, error) {
 	switch cfg.DatabaseType {
 	case config.DatabaseFirebase:
 		log.Printf("Initializing Firebase repository with project: %s, collection: %s", 
 			cfg.FirebaseProject, cfg.FirebaseCollection)
-		repo, err = repository.NewFirebaseRepository(
+		return repository.NewFirebaseRepository(
 			context.Background(),
 			cfg.FirebaseProject,
 			cfg.FirebaseCollection,
 		)
-		if err != nil {
-			log.Fatalf("Failed to initialize Firebase repository: %v", err)
-		}
 	case config.DatabaseMemory:
 		fallthrough
 	default:
 		log.Println("Initializing in-memory repository")
-		repo = repository.NewMemoryRepository()
+		return repository.NewMemoryRepository(), nil
+	}
+}
+
+// Setup configures all application routes
+func Setup(app *fiber.App, cfg *config.Config) error {
+	// Initialize repository based on configuration
+	repo, err := initRepository(cfg)
+	if err != nil {
+		return fmt.Errorf("failed to initialize repository: %w", err)
 	}
 
 	// Initialize handlers
@@ -62,4 +65,6 @@ func Setup(app *fiber.App, cfg *config.Config) {
 	api.Get("/books/:id", apiHandler.GetBook)
 	api.Put("/books/:id", apiHandler.UpdateBook)
 	api.Delete("/books/:id", apiHandler.DeleteBook)
+	
+	return nil
 }

@@ -87,3 +87,8 @@ func (r *MemoryRepository) Delete(ctx context.Context, id string) error {
 	delete(r.books, id)
 	return nil
 }
+
+// Close closes the repository - no-op for memory repository
+func (r *MemoryRepository) Close() error {
+	return nil
+}
