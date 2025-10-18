@@ -11,6 +11,7 @@ A modular web application built with Go Fiber framework that demonstrates modern
 - **HTMX Integration**: Dynamic content loading without full page reloads
 - **Static File Serving**: CSS, JavaScript and other static assets
 - **RESTful API Endpoints**: JSON API alongside HTML pages
+- **Book Store CRUD API**: Complete example of Create, Read, Update, Delete operations
 - **Modern UI**: Clean, professional design with responsive layout
 
 ## Project Structure
@@ -73,6 +74,60 @@ The server will start on `http://localhost:3000`
 ### API Routes
 - **GET /api/hello** - JSON API endpoint
 - **GET /api/hello-html** - HTML fragment endpoint for HTMX
+
+### Book Store API (CRUD Operations)
+- **POST /api/books** - Create a new book
+- **GET /api/books** - Get all books
+- **GET /api/books/:id** - Get a specific book by ID
+- **PUT /api/books/:id** - Update an existing book
+- **DELETE /api/books/:id** - Delete a book
+
+#### Book API Examples
+
+**Create a Book:**
+```bash
+curl -X POST http://localhost:3000/api/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "The Go Programming Language",
+    "author": "Alan Donovan and Brian Kernighan",
+    "isbn": "978-0134190440",
+    "year": 2015
+  }'
+```
+
+**Get All Books:**
+```bash
+curl -X GET http://localhost:3000/api/books
+```
+
+**Get a Specific Book:**
+```bash
+curl -X GET http://localhost:3000/api/books/1
+```
+
+**Update a Book:**
+```bash
+curl -X PUT http://localhost:3000/api/books/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "The Go Programming Language (Updated)",
+    "author": "Alan Donovan and Brian Kernighan",
+    "isbn": "978-0134190440",
+    "year": 2015
+  }'
+```
+
+**Delete a Book:**
+```bash
+curl -X DELETE http://localhost:3000/api/books/1
+```
+
+**Test All Endpoints:**
+```bash
+# Run the provided test script (make sure the server is running first)
+./test_book_api.sh
+```
 
 ## Architecture
 
