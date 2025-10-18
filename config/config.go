@@ -7,10 +7,10 @@ import (
 
 // Config holds application configuration
 type Config struct {
-	Port         string
-	ViewsPath    string
-	StaticPath   string
-	TemplateExt  string
+	Port        string
+	ViewsPath   string
+	StaticPath  string
+	TemplateExt string
 }
 
 // NewConfig creates a new configuration with default values
