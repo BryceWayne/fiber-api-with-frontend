@@ -26,9 +26,16 @@
 
     <script>
         document.getElementById('fetchBtn').addEventListener('click', async () => {
-            const response = await fetch('/api/hello');
-            const data = await response.json();
-            document.getElementById('apiResponse').innerHTML = `<p>API Response: ${data.message}</p>`;
+            try {
+                const response = await fetch('/api/hello');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                document.getElementById('apiResponse').innerHTML = `<p>API Response: ${data.message}</p>`;
+            } catch (error) {
+                document.getElementById('apiResponse').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
         });
     </script>
 </body>
