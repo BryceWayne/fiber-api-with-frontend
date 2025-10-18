@@ -119,6 +119,13 @@ func (h *APIHandler) UpdateBook(c *fiber.Ctx) error {
 		})
 	}
 
+	// Validate required fields
+	if updatedBook.Title == "" || updatedBook.Author == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Title and Author are required fields",
+		})
+	}
+
 	h.booksMutex.Lock()
 	defer h.booksMutex.Unlock()
 
