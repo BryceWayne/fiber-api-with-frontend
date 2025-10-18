@@ -1,11 +1,11 @@
 basePath: /
 definitions:
-  handlers.Book:
+  repository.Book:
     properties:
       author:
         type: string
       id:
-        type: integer
+        type: string
       isbn:
         type: string
       title:
@@ -40,7 +40,7 @@ paths:
           description: List of books
           schema:
             items:
-              $ref: '#/definitions/handlers.Book'
+              $ref: '#/definitions/repository.Book'
             type: array
       summary: Get all books
       tags:
@@ -55,14 +55,14 @@ paths:
         name: book
         required: true
         schema:
-          $ref: '#/definitions/handlers.Book'
+          $ref: '#/definitions/repository.Book'
       produces:
       - application/json
       responses:
         "201":
           description: Created book
           schema:
-            $ref: '#/definitions/handlers.Book'
+            $ref: '#/definitions/repository.Book'
         "400":
           description: Invalid request body or missing required fields
           schema:
@@ -82,18 +82,12 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
         "204":
           description: Book deleted successfully
-        "400":
-          description: Invalid book ID
-          schema:
-            additionalProperties:
-              type: string
-            type: object
         "404":
           description: Book not found
           schema:
@@ -112,20 +106,14 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: Book details
           schema:
-            $ref: '#/definitions/handlers.Book'
-        "400":
-          description: Invalid book ID
-          schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/repository.Book'
         "404":
           description: Book not found
           schema:
@@ -144,22 +132,22 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       - description: Updated book object
         in: body
         name: book
         required: true
         schema:
-          $ref: '#/definitions/handlers.Book'
+          $ref: '#/definitions/repository.Book'
       produces:
       - application/json
       responses:
         "200":
           description: Updated book
           schema:
-            $ref: '#/definitions/handlers.Book'
+            $ref: '#/definitions/repository.Book'
         "400":
-          description: Invalid book ID or request body
+          description: Invalid request body
           schema:
             additionalProperties:
               type: string

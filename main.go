@@ -34,7 +34,7 @@ func main() {
 	app := cfg.SetupApp(engine)
 
 	// Setup routes
-	routes.Setup(app)
+	routes.Setup(app, cfg)
 
 	// Start server
 	log.Fatal(app.Listen(cfg.Port))

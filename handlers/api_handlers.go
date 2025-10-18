@@ -1,33 +1,19 @@
 package handlers
 
 import (
-	"strconv"
-	"sync"
-
+	"github.com/BryceWayne/fiber-api-with-frontend/repository"
 	"github.com/gofiber/fiber/v2"
 )
 
-// Book represents a book in the bookstore
-type Book struct {
-	ID     int    `json:"id"`
-	Title  string `json:"title"`
-	Author string `json:"author"`
-	ISBN   string `json:"isbn"`
-	Year   int    `json:"year"`
-}
-
 // APIHandler handles API endpoints
 type APIHandler struct {
-	books      []Book
-	booksMutex sync.RWMutex
-	nextID     int
+	repo repository.BookRepository
 }
 
-// NewAPIHandler creates a new APIHandler
-func NewAPIHandler() *APIHandler {
+// NewAPIHandler creates a new APIHandler with the given repository
+func NewAPIHandler(repo repository.BookRepository) *APIHandler {
 	return &APIHandler{
-		books:  []Book{},
-		nextID: 1,
+		repo: repo,
 	}
 }
 
@@ -66,12 +52,12 @@ func (h *APIHandler) HelloHTML(c *fiber.Ctx) error {
 // @Tags books
 // @Accept json
 // @Produce json
-// @Param book body Book true "Book object to create"
-// @Success 201 {object} Book "Created book"
+// @Param book body repository.Book true "Book object to create"
+// @Success 201 {object} repository.Book "Created book"
 // @Failure 400 {object} map[string]string "Invalid request body or missing required fields"
 // @Router /api/books [post]
 func (h *APIHandler) CreateBook(c *fiber.Ctx) error {
-	book := new(Book)
+	book := new(repository.Book)
 
 	if err := c.BodyParser(book); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -86,11 +72,11 @@ func (h *APIHandler) CreateBook(c *fiber.Ctx) error {
 		})
 	}
 
-	h.booksMutex.Lock()
-	book.ID = h.nextID
-	h.nextID++
-	h.books = append(h.books, *book)
-	h.booksMutex.Unlock()
+	if err := h.repo.Create(c.Context(), book); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to create book",
+		})
+	}
 
 	return c.Status(fiber.StatusCreated).JSON(book)
 }
@@ -101,13 +87,17 @@ func (h *APIHandler) CreateBook(c *fiber.Ctx) error {
 // @Tags books
 // @Accept json
 // @Produce json
-// @Success 200 {array} Book "List of books"
+// @Success 200 {array} repository.Book "List of books"
 // @Router /api/books [get]
 func (h *APIHandler) GetBooks(c *fiber.Ctx) error {
-	h.booksMutex.RLock()
-	defer h.booksMutex.RUnlock()
+	books, err := h.repo.GetAll(c.Context())
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to retrieve books",
+		})
+	}
 
-	return c.JSON(h.books)
+	return c.JSON(books)
 }
 
 // GetBook handles GET /api/books/:id - returns a specific book
@@ -116,31 +106,21 @@ func (h *APIHandler) GetBooks(c *fiber.Ctx) error {
 // @Tags books
 // @Accept json
 // @Produce json
-// @Param id path int true "Book ID"
-// @Success 200 {object} Book "Book details"
-// @Failure 400 {object} map[string]string "Invalid book ID"
+// @Param id path string true "Book ID"
+// @Success 200 {object} repository.Book "Book details"
 // @Failure 404 {object} map[string]string "Book not found"
 // @Router /api/books/{id} [get]
 func (h *APIHandler) GetBook(c *fiber.Ctx) error {
-	id, err := strconv.Atoi(c.Params("id"))
+	id := c.Params("id")
+
+	book, err := h.repo.GetByID(c.Context(), id)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid book ID",
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Book not found",
 		})
 	}
 
-	h.booksMutex.RLock()
-	defer h.booksMutex.RUnlock()
-
-	for _, book := range h.books {
-		if book.ID == id {
-			return c.JSON(book)
-		}
-	}
-
-	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-		"error": "Book not found",
-	})
+	return c.JSON(book)
 }
 
 // UpdateBook handles PUT /api/books/:id - updates an existing book
@@ -149,21 +129,16 @@ func (h *APIHandler) GetBook(c *fiber.Ctx) error {
 // @Tags books
 // @Accept json
 // @Produce json
-// @Param id path int true "Book ID"
-// @Param book body Book true "Updated book object"
-// @Success 200 {object} Book "Updated book"
-// @Failure 400 {object} map[string]string "Invalid book ID or request body"
+// @Param id path string true "Book ID"
+// @Param book body repository.Book true "Updated book object"
+// @Success 200 {object} repository.Book "Updated book"
+// @Failure 400 {object} map[string]string "Invalid request body"
 // @Failure 404 {object} map[string]string "Book not found"
 // @Router /api/books/{id} [put]
 func (h *APIHandler) UpdateBook(c *fiber.Ctx) error {
-	id, err := strconv.Atoi(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid book ID",
-		})
-	}
+	id := c.Params("id")
 
-	updatedBook := new(Book)
+	updatedBook := new(repository.Book)
 	if err := c.BodyParser(updatedBook); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid request body",
@@ -177,21 +152,13 @@ func (h *APIHandler) UpdateBook(c *fiber.Ctx) error {
 		})
 	}
 
-	h.booksMutex.Lock()
-	defer h.booksMutex.Unlock()
-
-	for i, book := range h.books {
-		if book.ID == id {
-			// Preserve the ID
-			updatedBook.ID = id
-			h.books[i] = *updatedBook
-			return c.JSON(updatedBook)
-		}
+	if err := h.repo.Update(c.Context(), id, updatedBook); err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Book not found",
+		})
 	}
 
-	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-		"error": "Book not found",
-	})
+	return c.JSON(updatedBook)
 }
 
 // DeleteBook handles DELETE /api/books/:id - deletes a book
@@ -200,31 +167,18 @@ func (h *APIHandler) UpdateBook(c *fiber.Ctx) error {
 // @Tags books
 // @Accept json
 // @Produce json
-// @Param id path int true "Book ID"
+// @Param id path string true "Book ID"
 // @Success 204 "Book deleted successfully"
-// @Failure 400 {object} map[string]string "Invalid book ID"
 // @Failure 404 {object} map[string]string "Book not found"
 // @Router /api/books/{id} [delete]
 func (h *APIHandler) DeleteBook(c *fiber.Ctx) error {
-	id, err := strconv.Atoi(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid book ID",
+	id := c.Params("id")
+
+	if err := h.repo.Delete(c.Context(), id); err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Book not found",
 		})
 	}
 
-	h.booksMutex.Lock()
-	defer h.booksMutex.Unlock()
-
-	for i, book := range h.books {
-		if book.ID == id {
-			// Remove book from slice
-			h.books = append(h.books[:i], h.books[i+1:]...)
-			return c.Status(fiber.StatusNoContent).Send(nil)
-		}
-	}
-
-	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-		"error": "Book not found",
-	})
+	return c.Status(fiber.StatusNoContent).Send(nil)
 }

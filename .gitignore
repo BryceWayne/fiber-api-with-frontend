@@ -31,3 +31,13 @@ Thumbs.db
 # Compiled binary
 fiber-api-with-frontend
 fiber-app
+
+# Firebase credentials
+*-firebase-*.json
+*-service-account-*.json
+firebase-credentials.json
+service-account-key.json
+
+# Environment files
+.env
+.env.local

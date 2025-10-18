@@ -43,7 +43,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/handlers.Book"
+                                "$ref": "#/definitions/repository.Book"
                             }
                         }
                     }
@@ -68,7 +68,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.Book"
+                            "$ref": "#/definitions/repository.Book"
                         }
                     }
                 ],
@@ -76,7 +76,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created book",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Book"
+                            "$ref": "#/definitions/repository.Book"
                         }
                     },
                     "400": {
@@ -106,7 +106,7 @@ const docTemplate = `{
                 "summary": "Get a book by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Book ID",
                         "name": "id",
                         "in": "path",
@@ -117,16 +117,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Book details",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Book"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid book ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/repository.Book"
                         }
                     },
                     "404": {
@@ -154,7 +145,7 @@ const docTemplate = `{
                 "summary": "Update a book",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Book ID",
                         "name": "id",
                         "in": "path",
@@ -166,7 +157,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.Book"
+                            "$ref": "#/definitions/repository.Book"
                         }
                     }
                 ],
@@ -174,11 +165,11 @@ const docTemplate = `{
                     "200": {
                         "description": "Updated book",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Book"
+                            "$ref": "#/definitions/repository.Book"
                         }
                     },
                     "400": {
-                        "description": "Invalid book ID or request body",
+                        "description": "Invalid request body",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -211,7 +202,7 @@ const docTemplate = `{
                 "summary": "Delete a book",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Book ID",
                         "name": "id",
                         "in": "path",
@@ -221,15 +212,6 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "Book deleted successfully"
-                    },
-                    "400": {
-                        "description": "Invalid book ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     },
                     "404": {
                         "description": "Book not found",
@@ -294,14 +276,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handlers.Book": {
+        "repository.Book": {
             "type": "object",
             "properties": {
                 "author": {
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "isbn": {
                     "type": "string"
