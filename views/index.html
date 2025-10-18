@@ -15,11 +15,48 @@
         </ul>
     </nav>
     <main>
-        <h1>{{.Title}}</h1>
-        <p>{{.Message}}</p>
-        
+        <div class="page-header">
+            <h1>{{.Title}}</h1>
+            <p>{{.Message}}</p>
+        </div>
+
+        <!-- Strategy Overview Section -->
+        <div class="grid grid-cols-3" style="margin-bottom: 2rem;">
+            <div class="card">
+                <div class="card-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Strategy Type</h3>
+                    <span class="badge badge-primary">Advanced</span>
+                </div>
+                <p style="font-size: 1.25rem; font-weight: 600; color: var(--accent-primary);">Multi-Leg</p>
+                <p style="font-size: 0.875rem; margin-top: 0.5rem;">Complex options strategies with multiple positions</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Risk Level</h3>
+                    <span class="badge badge-warning">Moderate</span>
+                </div>
+                <p style="font-size: 1.25rem; font-weight: 600; color: var(--accent-warning);">Controlled</p>
+                <p style="font-size: 0.875rem; margin-top: 0.5rem;">Defined risk with limited downside exposure</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Status</h3>
+                    <span class="badge badge-success">Active</span>
+                </div>
+                <p style="font-size: 1.25rem; font-weight: 600; color: var(--accent-success);">Profitable</p>
+                <p style="font-size: 0.875rem; margin-top: 0.5rem;">Current position showing positive returns</p>
+            </div>
+        </div>
+
+        <!-- API Demo Section -->
         <div class="api-demo">
-            <h2>API Endpoint Demo</h2>
+            <div class="card-header">
+                <h2 style="margin: 0;">API Integration Demo</h2>
+                <span class="badge badge-primary">Live Data</span>
+            </div>
+            <p style="margin-bottom: 1.5rem;">Test the real-time API endpoint with HTMX dynamic loading</p>
             <button 
                 hx-get="/api/hello-html" 
                 hx-target="#apiResponse"
@@ -27,6 +64,47 @@
                 Fetch from API
             </button>
             <div id="apiResponse"></div>
+        </div>
+
+        <!-- Strategy Details Section -->
+        <div class="card" style="margin-top: 2rem;">
+            <h2 style="margin-top: 0;">Strategy Configuration</h2>
+            <div class="grid grid-cols-2" style="margin-top: 1.5rem;">
+                <div>
+                    <h3>Entry Parameters</h3>
+                    <ul class="param-list">
+                        <li class="param-item">
+                            <span class="param-label">Strike Price:</span> 
+                            <span class="param-value primary">$150.00</span>
+                        </li>
+                        <li class="param-item">
+                            <span class="param-label">Expiration:</span> 
+                            <span class="param-value">30 Days</span>
+                        </li>
+                        <li class="param-item">
+                            <span class="param-label">Premium:</span> 
+                            <span class="param-value success">$2.50</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Risk Metrics</h3>
+                    <ul class="metric-list">
+                        <li class="metric-item">
+                            <span class="metric-label">Max Profit:</span> 
+                            <span class="metric-value success">$500.00</span>
+                        </li>
+                        <li class="metric-item">
+                            <span class="metric-label">Max Loss:</span> 
+                            <span class="metric-value danger">$250.00</span>
+                        </li>
+                        <li class="metric-item">
+                            <span class="metric-label">Break-even:</span> 
+                            <span class="metric-value">$152.50</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </main>
 </body>
