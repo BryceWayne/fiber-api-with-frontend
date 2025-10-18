@@ -22,4 +22,11 @@ func Setup(app *fiber.App) {
 	api := app.Group("/api")
 	api.Get("/hello", apiHandler.Hello)
 	api.Get("/hello-html", apiHandler.HelloHTML)
+
+	// Book CRUD routes
+	api.Post("/books", apiHandler.CreateBook)
+	api.Get("/books", apiHandler.GetBooks)
+	api.Get("/books/:id", apiHandler.GetBook)
+	api.Put("/books/:id", apiHandler.UpdateBook)
+	api.Delete("/books/:id", apiHandler.DeleteBook)
 }
